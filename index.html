@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santisbon Apps - Flatpak Repository</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Light mode - Flathub colors */
+            --color-primary: #5b9bf5;
+            --color-primary-dark: #4a86e8;
+            --color-bg: #ffffff;
+            --color-surface: #ffffff;
+            --color-text: #414141;
+            --color-text-secondary: #6b6b6b;
+            --color-border: #e4e4e4;
+            --color-code-bg: #fbfbfb;
+            --border-radius: 12px;
+            --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark mode - Flathub colors with purple tints */
+                --color-primary: #669df6;
+                --color-primary-dark: #8ab4f8;
+                --color-bg: #504a58;
+                --color-surface: #3a3443;
+                --color-text: #e4e4e4;
+                --color-text-secondary: #aeaeae;
+                --color-border: #5a5462;
+                --color-code-bg: #2f2a37;
+                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.6), 0 1px 3px 1px rgba(0, 0, 0, 0.4);
+                --shadow-md: 0 1px 3px 0 rgba(0, 0, 0, 0.6), 0 4px 8px 3px rgba(0, 0, 0, 0.4);
+            }
+
+            .header {
+                background: linear-gradient(135deg, #1e3a5f 0%, #152a45 100%);
+            }
+
+            .header-icon {
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+            }
+
+            .button {
+                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+            }
+
+            .button:hover {
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+            }
+
+            .copy-button {
+                background: var(--color-surface);
+            }
+
+            .copy-button:hover {
+                background: var(--color-primary);
+            }
+
+            .copy-button.copied {
+                background: #34a853;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .header-icon {
+            width: 96px;
+            height: 96px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-text h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-text p {
+            font-size: 1.125rem;
+            opacity: 0.95;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--color-text);
+        }
+
+        .card-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .step-card {
+            background: var(--color-surface);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .step-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .step-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .app-card {
+            background: var(--color-surface);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .app-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .app-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            flex-shrink: 0;
+        }
+
+        .app-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .app-info p {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .code-block {
+            position: relative;
+            background: var(--color-code-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .code-block pre {
+            margin: 0;
+        }
+
+        .code-block code {
+            color: var(--color-text);
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .copy-button:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .copy-button.copied {
+            background: #34a853;
+            color: white;
+            border-color: #34a853;
+        }
+
+        .copy-button svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .inline-code {
+            background: var(--color-code-bg);
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.875em;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--color-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .button:hover {
+            background: var(--color-primary-dark);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background: var(--color-surface);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .button-secondary:hover {
+            background: var(--color-bg);
+            border-color: var(--color-primary);
+        }
+
+        .links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-text h1 {
+                font-size: 2rem;
+            }
+
+            .app-header {
+                flex-direction: column;
+            }
+
+            .step-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <img src="icon.svg" alt="Santisbon Apps Repository Icon" class="header-icon">
+            <div class="header-text">
+                <h1>Santisbon Apps</h1>
+                <p>Linux applications in Flatpak format with automatic updates</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="section">
+            <h2 class="section-title">Getting Started</h2>
+            <div class="card-grid">
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Install Flatpak</h3>
+                    </div>
+                    <div class="code-block"><pre><code>sudo apt install flatpak  <span style="color: #5f6368;"># Debian/Ubuntu</span>
+sudo dnf install flatpak  <span style="color: #5f6368;"># Fedora</span></code></pre></div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Add Flathub (required for dependencies)</h3>
+                    </div>
+                    <div class="code-block"><pre><code>flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo</code></pre></div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Add Santisbon Apps Repository</h3>
+                    </div>
+                    <div class="code-block"><pre><code>flatpak remote-add --user --if-not-exists santisbon-apps https://santisbon.github.io/flatpak-repo/santisbon-apps.flatpakrepo</code></pre></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Available Applications</h2>
+
+            <div class="card-grid">
+                <div class="step-card">
+                    <p style="margin-bottom: 1rem; color: var(--color-text-secondary);">Browse all available applications from this repository:</p>
+                    <div class="code-block"><pre><code>flatpak remote-ls santisbon-apps</code></pre></div>
+                </div>
+
+                <div class="app-card">
+                <div class="app-header">
+                    <img src="https://raw.githubusercontent.com/santisbon/icloud-flatpak/main/icons/me.santisbon.iCloudServices.Drive.png" alt="iCloud Services" class="app-icon">
+                    <div class="app-info">
+                        <h3>iCloud Services</h3>
+                        <p>Access all your iCloud web services on Linux with native desktop integration. Includes Mail, Calendar, Contacts, Photos, Drive, Notes, Reminders, Pages, Numbers, Keynote, and Find My.</p>
+                    </div>
+                </div>
+
+                <div class="code-block"><pre><code><span style="color: #5f6368;"># Install prerequisites (Chromium or Chrome)</span>
+flatpak install --user flathub org.chromium.Chromium
+
+<span style="color: #5f6368;"># Install iCloud Services</span>
+flatpak install --user santisbon-apps me.santisbon.iCloudServices</code></pre></div>
+
+                <div class="links">
+                    <a href="https://github.com/santisbon/icloud-flatpak" class="button">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                        </svg>
+                        View Source
+                    </a>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">Keep Apps Updated</h2>
+            <div class="step-card">
+                <p style="margin-bottom: 1rem; color: var(--color-text-secondary);">Run this command periodically to update all installed Flatpak applications:</p>
+                <div class="code-block"><pre><code>flatpak update</code></pre></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>
+            <a href="https://github.com/santisbon/flatpak-repo">Repository on GitHub</a>
+        </p>
+    </footer>
+
+    <script>
+        // Add copy buttons to all code blocks
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeBlocks = document.querySelectorAll('.code-block');
+
+            codeBlocks.forEach(function(codeBlock) {
+                const button = document.createElement('button');
+                button.className = 'copy-button';
+                button.innerHTML = `
+                    <svg viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/>
+                        <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/>
+                    </svg>
+                    Copy
+                `;
+
+                button.addEventListener('click', function() {
+                    const code = codeBlock.querySelector('code');
+                    const text = code.textContent;
+
+                    navigator.clipboard.writeText(text).then(function() {
+                        button.classList.add('copied');
+                        button.innerHTML = `
+                            <svg viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"/>
+                            </svg>
+                            Copied!
+                        `;
+
+                        setTimeout(function() {
+                            button.classList.remove('copied');
+                            button.innerHTML = `
+                                <svg viewBox="0 0 16 16" fill="currentColor">
+                                    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"/>
+                                    <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"/>
+                                </svg>
+                                Copy
+                            `;
+                        }, 2000);
+                    }).catch(function(err) {
+                        console.error('Failed to copy:', err);
+                    });
+                });
+
+                codeBlock.appendChild(button);
+            });
+        });
+    </script>
+</body>
+</html>
