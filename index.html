@@ -308,6 +308,40 @@
             border-color: var(--color-primary);
         }
 
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .screenshot {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .screenshot img:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .screenshot-caption {
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
         .links {
             display: flex;
             gap: 1rem;
@@ -417,6 +451,17 @@ flatpak install --user flathub com.google.Chrome</code></pre></div>
 
                 <div class="code-block"><pre><code><span style="color: #5f6368;"># Install iCloud Services</span>
 flatpak install --user santisbon-apps me.santisbon.iCloudServices</code></pre></div>
+
+                <div class="screenshots">
+                    <div class="screenshot">
+                        <img src="https://raw.githubusercontent.com/santisbon/icloud-flatpak/main/screenshot1.png" alt="Desktop integration with proper categories and icons">
+                        <p class="screenshot-caption">Desktop integration with proper categories and icons</p>
+                    </div>
+                    <div class="screenshot">
+                        <img src="https://raw.githubusercontent.com/santisbon/icloud-flatpak/main/screenshot2.png" alt="Apps pinned to Task Manager">
+                        <p class="screenshot-caption">Apps pinned to Task Manager</p>
+                    </div>
+                </div>
 
                 <div class="links">
                     <a href="https://github.com/santisbon/icloud-flatpak" class="button" target="_blank">
