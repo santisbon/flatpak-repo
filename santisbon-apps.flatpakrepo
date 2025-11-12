@@ -1,7 +1,7 @@
 [Flatpak Repo]
 Title=Santisbon Applications
-Url=https://santisbon.github.io/flatpak-repo/repo
-Homepage=https://santisbon.github.io/flatpak-repo/
+Url=https://flatpak.santisbon.me/repo
+Homepage=https://flatpak.santisbon.me/
 Comment=Applications by Santisbon
 Description=A collection of Flatpak applications including iCloud Services
 Icon=https://raw.githubusercontent.com/santisbon/flatpak-repo/main/icon.svg

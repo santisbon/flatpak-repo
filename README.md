@@ -2,7 +2,7 @@
 
 A self-hosted Flatpak repository for distributing custom Linux applications with automatic updates.
 
-**Repository URL**: https://santisbon.github.io/flatpak-repo/
+**Repository URL**: https://flatpak.santisbon.me/
 
 ## About This Repository
 
@@ -30,7 +30,7 @@ This repository hosts an OSTree-based Flatpak repository containing multiple app
 
 3. **Add Santisbon Apps Repository**:
    ```bash
-   flatpak remote-add --user --if-not-exists santisbon-apps https://santisbon.github.io/flatpak-repo/santisbon-apps.flatpakrepo
+   flatpak remote-add --user --if-not-exists santisbon-apps https://flatpak.santisbon.me/santisbon-apps.flatpakrepo
    ```
 
 4. **Browse Available Apps**:
@@ -126,9 +126,9 @@ git push origin main
 
 This repository is hosted on GitHub Pages:
 
-- **Website**: https://santisbon.github.io/flatpak-repo/
-- **Repository URL**: https://santisbon.github.io/flatpak-repo/repo
-- **Configuration**: https://santisbon.github.io/flatpak-repo/santisbon-apps.flatpakrepo
+- **Website**: https://flatpak.santisbon.me/
+- **Repository URL**: https://flatpak.santisbon.me/repo
+- **Configuration**: https://flatpak.santisbon.me/santisbon-apps.flatpakrepo
 
 To enable GitHub Pages:
 1. Go to repository Settings → Pages
